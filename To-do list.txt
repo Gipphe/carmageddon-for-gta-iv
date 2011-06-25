@@ -1,0 +1,59 @@
+Implementer.vbs
+	1. Check if path to handling.dat exists
+		True: End if
+		False: Manually input written path to path.txt
+			- Write manually written path to path.txt
+	2. Check if handling.dat exists
+		True: End loop
+		False: Ask if user wants to write again
+			Yes: prompt for input
+			No: "Carmageddon will not work otherwise, are you sure?"
+				Yes: Quit
+				No: Loop
+	3. Create directory gtaiv\cm\
+	4. Create directory gtaiv\backup\
+	5. Move .\handling.dat to gtaiv\cm\handling.dat
+
+
+Switcher.vbs
+	1. Check if path to handling.dat exists
+		True: End if
+		False: Manually input path to handling.dat
+			- Write manually written path to path.txt
+			- Make paths for active, backup and cm
+	2. Check if handling.dat exists
+		True: End loop
+		False: Ask if user wants to write again
+			Yes: prompt for input
+			No: quit
+	3. Check if backup\handling.dat exists
+		True: Check if carmageddon\handling.dat exists
+			True: "Something's wrong. Quitting"
+			False: Currently active. Deactivating.
+		False: Currently inactive. Activating.
+		
+	Activating:
+	1. Move file handling.dat to backup\handling.dat
+	2. Move file carmageddon\handling.dat to handling.dat
+
+	Deactivating
+	1. Move file handling.dat to carmageddon\handling.dat
+	2. Move file backup\handling.dat to handling.dat
+
+	
+Reinstatement.vbs
+	1. Check if path to handling.dat exists
+		True: End if
+		False: Manually input path to handling.dat
+			- Write manually written path to path.txt
+			- Make paths for active, backup and cm
+	2. Check if \cm\handling.dat exists
+		True: Delete \cm\handling.dat, quit
+		False: End if
+	3. Check if \backup\handling.dat exists
+		True: Delete handling.dat, move \backup\handling.dat to handling.dat, quit
+		False: End if
+	4. Check if handling.dat exists
+			True: Delete handling.dat, move .\handling.dat to handling.dat
+			False: Move .\handling.dat to handling.dat
+			
