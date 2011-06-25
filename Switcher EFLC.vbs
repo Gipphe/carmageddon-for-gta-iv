@@ -18,7 +18,7 @@ Option Explicit
 Dim objFSO, config, sContinue, configfound, FolderCreate, cmfolder, backupfolder, handlingfolder, datapath, cmpath, handlingpath, backuppath, objConfig, objFile, i, strLine, TBOGThandlingpath, TLADhandlingpath, TLADdatapath, TLADcmpath, TLADbackuppath, TLADbackupfolder, TLADcmfolder, TBOGTdatapath, TBOGTbackuppath, TBOGTcmpath, TBOGTbackupfolder, TBOGTcmfolder, inputpath, par1, par3, par4, par5, par6, par7, par8
 
 Const ForReading = 1, ForWriting = 2, ForAppending = 8
-config = ".\GTAIVpath.txt"
+config = ".\EFLCpath.txt"
 
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 
@@ -51,20 +51,42 @@ Sub findpath()
 		handlingpath = datapath & "handling.dat"
 		backuppath = datapath & "backup\handling.dat"
 		cmpath = datapath & "cm\handling.dat"
-
+		TBOGTdatapath = inputpath & "\TBoGT\common\data\"
+		TBOGThandlingpath = TBOGTdatapath & "handling.dat"
+		TBOGTbackuppath = TBOGTdatapath & "backup\handling.dat"
+		TBOGTcmpath = TBOGTdatapath & "cm\handling.dat"
+		TLADdatapath = inputpath & "\TLAD\common\data\"
+		TLADhandlingpath = TLADdatapath & "handling.dat"
+		TLADbackuppath = TLADdatapath & "backup\handling.dat"
+		TLADcmpath = TLADdatapath & "cm\handling.dat"
 		
 		cmfolder = datapath & "cm"
 		backupfolder = datapath & "backup"
-
+		TBOGTcmfolder = TBOGTdatapath & "cm"
+		TBOGTbackupfolder = TBOGTdatapath & "backup"
+		TLADcmfolder = TLADdatapath & "cm"
+		TLADbackupfolder = TLADdatapath & "backup"
 	Else
-		inputpath = Inputbox( "Write the full path to your GTA IV directory. It can be 'C:\Program Files (x86)\Steam\steamapps\common\grand theft auto iv\GTAIV', '(C:\Program Files\Grand Theft Auto IV' or wherever you have placed it. ",10,"C:\Program Files\Steam\steamapps\common\grand theft auto iv\GTAIV" )
+		inputpath = Inputbox( "Write the full path to your GTA IV Episodes from Liberty City directory. It can be 'C:\Program Files (x86)\Steam\steamapps\common\grand theft auto iv episodes from liberty city\EFLC', '(C:\Program Files\Grand Theft Auto IV Episodes From Liberty City' or wherever you have placed it. ",10,"C:\Program Files\Steam\steamapps\common\grand theft auto iv\GTAIV" )
 		datapath = inputpath & "\common\data\"
 		handlingpath = datapath & "handling.dat"
 		backuppath = datapath & "backup\handling.dat"
 		cmpath = datapath & "cm\handling.dat"
+		TBOGTdatapath = inputpath & "\TBoGT\common\data\"
+		TBOGThandlingpath = TBOGTdatapath & "handling.dat"
+		TBOGTbackuppath = TBOGTdatapath & "backup\handling.dat"
+		TBOGTcmpath = TBOGTdatapath & "cm\handling.dat"
+		TLADdatapath = inputpath & "\TLAD\common\data\"
+		TLADhandlingpath = TLADdatapath & "handling.dat"
+		TLADbackuppath = TLADdatapath & "backup\handling.dat"
+		TLADcmpath = TLADdatapath & "cm\handling.dat"
 		
 		cmfolder = datapath & "cm"
 		backupfolder = datapath & "backup"
+		TBOGTcmfolder = TBOGTdatapath & "cm"
+		TBOGTbackupfolder = TBOGTdatapath & "backup"
+		TLADcmfolder = TLADdatapath & "cm"
+		TLADbackupfolder = TLADdatapath & "backup"
 		
 		Set objConfig = objFSO.OpenTextFile(config, ForWriting, True)
 		objConfig.WriteLine(inputpath)
@@ -104,6 +126,16 @@ Sub confirmpath(par3)
 			End if
 		End if
 	Loop
+End sub
+
+Sub confirmpathEFLC(par7)
+	configfound = 0
+	If objFSO.FileExists(par3) Then
+		configfound = 1
+	Else if not objFSO.FileExists(par3) Then
+		configfound = 0
+	End if
+	End if
 End sub
 
 Sub scriptrun

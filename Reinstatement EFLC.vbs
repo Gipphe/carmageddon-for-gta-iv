@@ -17,21 +17,27 @@ Dim objFSO, config, sContinue, FilesFound, configfound, FolderCreate, cmfolder, 
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 
 Const ForReading = 1, ForWriting = 2, ForAppending = 8
-config = ".\GTAIVpath.txt"
+config = ".\EFLCpath.txt"
 configfound = 0
 
 findpath
 confirmpath(handlingpath)
 
 deletefile cmpath
+deletefile TBOGTcmpath
+deletefile TLADcmpath
 replacefile backuppath, handlingpath
-
+replacefile TBOGTbackuppath, TBOGThandlingpath
+replacefile TLADbackuppath, TLADhandlingpath
 
 fixhandling
 
 deletefolder cmfolder
 deletefolder backupfolder
-
+deletefolder TBOGTcmfolder
+deletefolder TBOGTbackupfolder
+deletefolder TLADcmfolder
+deletefolder TLADbackupfolder
 '---
 
 Sub findpath()
@@ -54,18 +60,42 @@ Sub findpath()
 		handlingpath = datapath & "handling.dat"
 		backuppath = datapath & "backup\handling.dat"
 		cmpath = datapath & "cm\handling.dat"
+		TBOGTdatapath = inputpath & "\TBoGT\common\data\"
+		TBOGThandlingpath = TBOGTdatapath & "handling.dat"
+		TBOGTbackuppath = TBOGTdatapath & "backup\handling.dat"
+		TBOGTcmpath = TBOGTdatapath & "cm\handling.dat"
+		TLADdatapath = inputpath & "\TLAD\common\data\"
+		TLADhandlingpath = TLADdatapath & "handling.dat"
+		TLADbackuppath = TLADdatapath & "backup\handling.dat"
+		TLADcmpath = TLADdatapath & "cm\handling.dat"
 		
 		cmfolder = datapath & "cm"
 		backupfolder = datapath & "backup"
+		TBOGTcmfolder = TBOGTdatapath & "cm"
+		TBOGTbackupfolder = TBOGTdatapath & "backup"
+		TLADcmfolder = TLADdatapath & "cm"
+		TLADbackupfolder = TLADdatapath & "backup"
 	Else
-		inputpath = Inputbox( "Write the full path to your GTA IV directory. It can be 'C:\Program Files (x86)\Steam\steamapps\common\grand theft auto iv\GTAIV', '(C:\Program Files\Grand Theft Auto IV' or wherever you have placed it. ",10,"C:\Program Files\Steam\steamapps\common\grand theft auto iv\GTAIV" )
+		inputpath = Inputbox( "Write the full path to your GTA IV Episodes from Liberty City directory. It can be 'C:\Program Files (x86)\Steam\steamapps\common\grand theft auto iv episodes from liberty city\EFLC', '(C:\Program Files\Grand Theft Auto IV Episodes From Liberty City' or wherever you have placed it. ",10,"C:\Program Files\Steam\steamapps\common\grand theft auto iv\GTAIV" )
 		datapath = inputpath & "\common\data\"
 		handlingpath = datapath & "handling.dat"
 		backuppath = datapath & "backup\handling.dat"
 		cmpath = datapath & "cm\handling.dat"
+		TBOGTdatapath = inputpath & "\TBoGT\common\data\"
+		TBOGThandlingpath = TBOGTdatapath & "handling.dat"
+		TBOGTbackuppath = TBOGTdatapath & "backup\handling.dat"
+		TBOGTcmpath = TBOGTdatapath & "cm\handling.dat"
+		TLADdatapath = inputpath & "\TLAD\common\data\"
+		TLADhandlingpath = TLADdatapath & "handling.dat"
+		TLADbackuppath = TLADdatapath & "backup\handling.dat"
+		TLADcmpath = TLADdatapath & "cm\handling.dat"
 		
 		cmfolder = datapath & "cm"
 		backupfolder = datapath & "backup"
+		TBOGTcmfolder = TBOGTdatapath & "cm"
+		TBOGTbackupfolder = TBOGTdatapath & "backup"
+		TLADcmfolder = TLADdatapath & "cm"
+		TLADbackupfolder = TLADdatapath & "backup"
 		
 		Set objConfig = objFSO.OpenTextFile(config, ForWriting, True)
 		objConfig.WriteLine(inputpath)
@@ -137,9 +167,21 @@ Sub writepath()
 	handlingpath = datapath & "handling.dat"
 	backuppath = datapath & "backup\handling.dat"
 	cmpath = datapath & "cm\handling.dat"
+	TBOGTdatapath = inputpath & "\TBoGT\common\data\"
+	TBOGThandlingpath = TBOGTdatapath & "handling.dat"
+	TBOGTbackuppath = TBOGTdatapath & "backup\handling.dat"
+	TBOGTcmpath = TBOGTdatapath & "cm\handling.dat"
+	TLADdatapath = inputpath & "\TLAD\common\data\"
+	TLADhandlingpath = TLADdatapath & "handling.dat"
+	TLADbackuppath = TLADdatapath & "backup\handling.dat"
+	TLADcmpath = TLADdatapath & "cm\handling.dat"
 	
 	cmfolder = datapath & "cm"
 	backupfolder = datapath & "backup"
+	TBOGTcmfolder = TBOGTdatapath & "cm"
+	TBOGTbackupfolder = TBOGTdatapath & "backup"
+	TLADcmfolder = TLADdatapath & "cm"
+	TLADbackupfolder = TLADdatapath & "backup"
 	
 	Set objConfig = objFSO.OpenTextFile(config, ForWriting, True)
 	objConfig.WriteLine(inputpath)
