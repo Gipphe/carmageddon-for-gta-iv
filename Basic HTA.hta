@@ -1,0 +1,21 @@
+<HEAD>
+    <TITLE>CarE</TITLE>
+    <HTA:APPLICATION ID="CarE"
+      APPLICATIONNAME="CarE"
+      BORDER="thick"
+      CAPTION="no"
+      ICON="./CarEico.ico"
+      SHOWINTASKBAR="yes"
+      SINGLEINSTANCE="yes"
+      SYSMENU="yes"
+      WINDOWSTATE="">
+</HEAD>
+<script language="VBScript">
+	Sub ExitHTA
+		self.close()
+	End sub
+</script>
+<body>
+<input type="button" value="Exit" name="run_button"  onClick="ExitHTA"><p> 
+
+</body>

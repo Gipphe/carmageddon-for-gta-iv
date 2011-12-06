@@ -1,6 +1,7 @@
 Option Explicit
 
-Dim objFSO, config, sContinue, configfound, FolderCreate, cmfolder, backupfolder, handlingfolder, datapath, cmpath, handlingpath, backuppath, objConfig, objFile, i, strLine, TBOGThandlingpath, TLADhandlingpath, TLADdatapath, TLADcmpath, TLADbackuppath, TLADbackupfolder, TLADcmfolder, TBOGTdatapath, TBOGTbackuppath, TBOGTcmpath, TBOGTbackupfolder, TBOGTcmfolder, inputpath, par1, par3, par4, par5, par6, par7, par8, NotReadRights, strComputer, StdOut, strKeyPath, oReg, strValueName, strValue, KEY_QUERY_VALUE, bHasAccessRight, FilesFound, delefolder
+'Variables and constants
+Dim objFSO, config, sContinue, configfound, FolderCreate, cmfolder, backupfolder, handlingfolder, datapath, cmpath, handlingpath, backuppath, objConfig, objFile, i, strLine, TBOGThandlingpath, TLADhandlingpath, TLADdatapath, TLADcmpath, TLADbackuppath, TLADbackupfolder, TLADcmfolder, TBOGTdatapath, TBOGTbackuppath, TBOGTcmpath, TBOGTbackupfolder, TBOGTcmfolder, inputpath, par1, par3, par4, par5, par6, par7, par8, NotReadRights, strComputer, StdOut, strKeyPath, oReg, strValueName, strValue, KEY_QUERY_VALUE, bHasAccessRight
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 Set StdOut = WScript.StdOut
 
@@ -10,10 +11,9 @@ Const HKEY_QUERY_VALUE = &H0001
 Const HKEY_LOCAL_MACHINE = &H80000002
 config = ".\GTAIVpath.ini"
 strComputer = "."
-configfound = 0
 Set oReg = GetObject("winmgmts:{impersonationLevel=impersonate}!\\" &_ 
 strComputer & "\root\default:StdRegProv")
-strKeyPath = "SOFTWARE\Wow6432Node\Rockstar Games\Grand Theft Auto IV"
+strKeyPath = "SOFTWARE\Wow6432Node\Rockstar Games\EFLC"
 strValueName = "Installfolder"
 
 '---
@@ -23,14 +23,17 @@ checkregistryaccess
 readpath
 confirmpath(handlingpath)
 
-deletefile cmpath
-replacefile backuppath, handlingpath
+makefolder(cmfolder)
+makefolder(backupfolder)
 
-
-fixhandling
-
-deletefolder cmfolder
-deletefolder backupfolder
+confirmpath(handlingpath)
+if configfound = 1 Then
+	implementfile cmfolder, ".\GTAIV\handling_carmageddon.dat", cmpath
+else if not configfound = 1 Then
+	wscript.echo "A critical error occurred. Error code 10000"
+	wscript.quit()
+End if
+End if
 
 '---
 'Subroutines
@@ -72,7 +75,7 @@ Sub findpath()
 		Next
 		setpaths
 	Else
-		inputpath = Inputbox( "Write the full path to your GTA IV directory. It can be 'C:\Program Files (x86)\Steam\steamapps\common\grand theft auto iv\GTAIV', '(C:\Program Files\Rockstar Games\Grand Theft Auto IV' or wherever you have placed it. ",10,"C:\Program Files\Steam\steamapps\common\grand theft auto iv\GTAIV" )
+		inputpath = Inputbox( "Write the full path to your GTA IV Episodes from Liberty City directory. It can be 'C:\Program Files (x86)\Steam\steamapps\common\episodes from liberty city\EFLC', '(C:\Program Files\Rockstar Games\Episodes From Liberty City' or wherever you have placed it. ",10,"C:\Program Files\Steam\steamapps\common\episodes from liberty city\EFLC" )
 		setpaths
 		
 		Set objConfig = objFSO.OpenTextFile(config, ForWriting, True)
@@ -86,10 +89,31 @@ Sub setpaths()
 	handlingpath = datapath & "handling.dat"
 	backuppath = datapath & "backup\handling.dat"
 	cmpath = datapath & "cm\handling.dat"
+	TBOGTdatapath = inputpath & "\TBoGT\common\data\"
+	TBOGThandlingpath = TBOGTdatapath & "handling.dat"
+	TBOGTbackuppath = TBOGTdatapath & "backup\handling.dat"
+	TBOGTcmpath = TBOGTdatapath & "cm\handling.dat"
+	TLADdatapath = inputpath & "\TLAD\common\data\"
+	TLADhandlingpath = TLADdatapath & "handling.dat"
+	TLADbackuppath = TLADdatapath & "backup\handling.dat"
+	TLADcmpath = TLADdatapath & "cm\handling.dat"
 
 	
 	cmfolder = datapath & "cm"
 	backupfolder = datapath & "backup"
+	TBOGTcmfolder = TBOGTdatapath & "cm"
+	TBOGTbackupfolder = TBOGTdatapath & "backup"
+	TLADcmfolder = TLADdatapath & "cm"
+	TLADbackupfolder = TLADdatapath & "backup"
+End sub
+
+Sub makefolder(par1)
+	If not objFSO.FolderExists(par1) Then
+		objFSO.CreateFolder(par1)
+		If not objFSO.FolderExists(par1) Then
+			wscript.echo "Could not create folder:" & par1
+		End if
+	End if
 End sub
 
 Sub confirmpath(par3)
@@ -117,37 +141,14 @@ Sub confirmpath(par3)
 	Loop
 End sub
 
-Sub deletefile(par8)
-	If objFSO.FileExists(par8) Then
-		objFSO.DeleteFile par8, True
-		FilesFound = 1
+Sub implementfile(par5, par6, par8)
+	If objFSO.FolderExists(par5) Then
+		objFSO.CopyFile par6, par8
+	Else If Not objFSO.FolderExists(par5) Then
+		wscript.echo "Encountered an error while trying to implement carmageddon's files. Carmageddon will NOT work. Error code: 9997"
+		wscript.quit()
 	End if
-End sub
-
-Sub replacefile(par9, par10)
-	If objFSO.FileExists(par9) Then
-		objFSO.DeleteFile par10, True
-		objFSO.MoveFile par9, par10
-		FilesFound = 1
-	End if
-End sub
-
-Sub deletefolder(par11)
-	If objFSO.FolderExists(par11) Then
-		set delefolder = objFSO.GetFolder(par11)
-		delefolder.Delete
-	End if
-End sub
-
-Sub fixhandling()
-	if FilesFound = 0 Then
-		If objFSO.FileExists(handlingpath) Then
-			objFSO.DeleteFile handlingpath, True
-			objFSO.CopyFile ".\GTAIV\handling.dat", handlingpath
-		Else
-			objFSO.CopyFile ".\GTAIV\handling.dat", handlingpath
-		End if
-	End if
+	End If
 End sub
 
 Sub checkregistryaccess()

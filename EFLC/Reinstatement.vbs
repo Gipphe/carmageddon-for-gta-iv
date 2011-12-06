@@ -13,7 +13,7 @@ strComputer = "."
 configfound = 0
 Set oReg = GetObject("winmgmts:{impersonationLevel=impersonate}!\\" &_ 
 strComputer & "\root\default:StdRegProv")
-strKeyPath = "SOFTWARE\Wow6432Node\Rockstar Games\Grand Theft Auto IV"
+strKeyPath = "SOFTWARE\Wow6432Node\Rockstar Games\EFLC"
 strValueName = "Installfolder"
 
 '---
@@ -72,7 +72,7 @@ Sub findpath()
 		Next
 		setpaths
 	Else
-		inputpath = Inputbox( "Write the full path to your GTA IV directory. It can be 'C:\Program Files (x86)\Steam\steamapps\common\grand theft auto iv\GTAIV', '(C:\Program Files\Rockstar Games\Grand Theft Auto IV' or wherever you have placed it. ",10,"C:\Program Files\Steam\steamapps\common\grand theft auto iv\GTAIV" )
+		inputpath = Inputbox( "Write the full path to your GTA IV Episodes from Liberty City directory. It can be 'C:\Program Files (x86)\Steam\steamapps\common\episodes from liberty city\EFLC', '(C:\Program Files\Rockstar Games\Episodes From Liberty City' or wherever you have placed it. ",10,"C:\Program Files\Steam\steamapps\common\episodes from liberty city\EFLC" )
 		setpaths
 		
 		Set objConfig = objFSO.OpenTextFile(config, ForWriting, True)
@@ -86,10 +86,22 @@ Sub setpaths()
 	handlingpath = datapath & "handling.dat"
 	backuppath = datapath & "backup\handling.dat"
 	cmpath = datapath & "cm\handling.dat"
+	TBOGTdatapath = inputpath & "\TBoGT\common\data\"
+	TBOGThandlingpath = TBOGTdatapath & "handling.dat"
+	TBOGTbackuppath = TBOGTdatapath & "backup\handling.dat"
+	TBOGTcmpath = TBOGTdatapath & "cm\handling.dat"
+	TLADdatapath = inputpath & "\TLAD\common\data\"
+	TLADhandlingpath = TLADdatapath & "handling.dat"
+	TLADbackuppath = TLADdatapath & "backup\handling.dat"
+	TLADcmpath = TLADdatapath & "cm\handling.dat"
 
 	
 	cmfolder = datapath & "cm"
 	backupfolder = datapath & "backup"
+	TBOGTcmfolder = TBOGTdatapath & "cm"
+	TBOGTbackupfolder = TBOGTdatapath & "backup"
+	TLADcmfolder = TLADdatapath & "cm"
+	TLADbackupfolder = TLADdatapath & "backup"
 End sub
 
 Sub confirmpath(par3)

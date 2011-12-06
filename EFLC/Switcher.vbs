@@ -1,6 +1,4 @@
 Option Explicit
-
-'Variables and constants
 Dim objFSO, config, sContinue, configfound, FolderCreate, cmfolder, backupfolder, handlingfolder, datapath, cmpath, handlingpath, backuppath, objConfig, objFile, i, strLine, TBOGThandlingpath, TLADhandlingpath, TLADdatapath, TLADcmpath, TLADbackuppath, TLADbackupfolder, TLADcmfolder, TBOGTdatapath, TBOGTbackuppath, TBOGTcmpath, TBOGTbackupfolder, TBOGTcmfolder, inputpath, par1, par3, par4, par5, par6, par7, par8, NotReadRights, strComputer, StdOut, strKeyPath, oReg, strValueName, strValue, KEY_QUERY_VALUE, bHasAccessRight
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 Set StdOut = WScript.StdOut
@@ -13,7 +11,7 @@ config = ".\GTAIVpath.ini"
 strComputer = "."
 Set oReg = GetObject("winmgmts:{impersonationLevel=impersonate}!\\" &_ 
 strComputer & "\root\default:StdRegProv")
-strKeyPath = "SOFTWARE\Wow6432Node\Rockstar Games\Grand Theft Auto IV"
+strKeyPath = "SOFTWARE\Wow6432Node\Rockstar Games\EFLC"
 strValueName = "Installfolder"
 
 '---
@@ -23,17 +21,9 @@ checkregistryaccess
 readpath
 confirmpath(handlingpath)
 
-makefolder(cmfolder)
-makefolder(backupfolder)
+scriptrun
 
-confirmpath(handlingpath)
-if configfound = 1 Then
-	implementfile cmfolder, ".\GTAIV\handling_carmageddon.dat", cmpath
-else if not configfound = 1 Then
-	wscript.echo "A critical error occurred. Error code 10000"
-	wscript.quit()
-End if
-End if
+
 
 '---
 'Subroutines
@@ -75,7 +65,7 @@ Sub findpath()
 		Next
 		setpaths
 	Else
-		inputpath = Inputbox( "Write the full path to your GTA IV directory. It can be 'C:\Program Files (x86)\Steam\steamapps\common\grand theft auto iv\GTAIV', '(C:\Program Files\Rockstar Games\Grand Theft Auto IV' or wherever you have placed it. ",10,"C:\Program Files\Steam\steamapps\common\grand theft auto iv\GTAIV" )
+		inputpath = Inputbox( "Write the full path to your GTA IV Episodes from Liberty City directory. It can be 'C:\Program Files (x86)\Steam\steamapps\common\episodes from liberty city\EFLC', '(C:\Program Files\Rockstar Games\Episodes From Liberty City' or wherever you have placed it. ",10,"C:\Program Files\Steam\steamapps\common\episodes from liberty city\EFLC" )
 		setpaths
 		
 		Set objConfig = objFSO.OpenTextFile(config, ForWriting, True)
@@ -89,19 +79,22 @@ Sub setpaths()
 	handlingpath = datapath & "handling.dat"
 	backuppath = datapath & "backup\handling.dat"
 	cmpath = datapath & "cm\handling.dat"
+	TBOGTdatapath = inputpath & "\TBoGT\common\data\"
+	TBOGThandlingpath = TBOGTdatapath & "handling.dat"
+	TBOGTbackuppath = TBOGTdatapath & "backup\handling.dat"
+	TBOGTcmpath = TBOGTdatapath & "cm\handling.dat"
+	TLADdatapath = inputpath & "\TLAD\common\data\"
+	TLADhandlingpath = TLADdatapath & "handling.dat"
+	TLADbackuppath = TLADdatapath & "backup\handling.dat"
+	TLADcmpath = TLADdatapath & "cm\handling.dat"
 
 	
 	cmfolder = datapath & "cm"
 	backupfolder = datapath & "backup"
-End sub
-
-Sub makefolder(par1)
-	If not objFSO.FolderExists(par1) Then
-		objFSO.CreateFolder(par1)
-		If not objFSO.FolderExists(par1) Then
-			wscript.echo "Could not create folder:" & par1
-		End if
-	End if
+	TBOGTcmfolder = TBOGTdatapath & "cm"
+	TBOGTbackupfolder = TBOGTdatapath & "backup"
+	TLADcmfolder = TLADdatapath & "cm"
+	TLADbackupfolder = TLADdatapath & "backup"
 End sub
 
 Sub confirmpath(par3)
@@ -129,14 +122,49 @@ Sub confirmpath(par3)
 	Loop
 End sub
 
-Sub implementfile(par5, par6, par8)
-	If objFSO.FolderExists(par5) Then
-		objFSO.CopyFile par6, par8
-	Else If Not objFSO.FolderExists(par5) Then
-		wscript.echo "Encountered an error while trying to implement carmageddon's files. Carmageddon will NOT work. Error code: 9997"
-		wscript.quit()
+Sub scriptrun
+	If objFSO.FileExists(backuppath) Then
+		If objFSO.FileExists(cmpath) Then
+			wscript.echo "Something's wrong: there exists a backup of the original, the carmageddon version AND an active file (which is undefined), all at the same time." & _
+			vbCrLf & "Delete either the backup or the carmageddon backup. They can be found in folders in your '\common\data' folder." & _
+			vbCrLf & "Check the active file to see which of them it it, and delete the other one."
+		else if not objFSO.FileExists(cmpath) Then
+			sContinue = MsgBox("Carmageddon is currently active." & _ 
+			vbCrLf & "Would you like to deactivate Carmageddon?", 260, "Carmageddon active") 
+			If sContinue <> 7 Then
+				objFSO.MoveFile handlingpath, cmpath
+				objFSO.MoveFile backuppath, handlingpath
+				wscript.echo "Carmageddon deactivated."
+				wscript.quit()
+			Else if		sContinue <> 6 Then
+				WScript.Echo "Carmageddon will remain active. Exiting."
+				WScript.Quit() 
+			End If 
+		End if
+		End if
+		End if
+	Else if not objFSO.FileExists(backuppath) Then
+		If objFSO.FileExists(cmpath) Then
+			sContinue = MsgBox("Carmageddon is currently inactive." & _ 
+			vbCrLf & "Would you like to activate Carmageddon?", 260, "Carmageddon inactive") 
+			If sContinue <> 7 Then
+				objFSO.MoveFile handlingpath, backuppath 
+				objFSO.MoveFile cmpath, handlingpath 
+				wscript.echo "Carmageddon activated."
+				wscript.quit()
+			Else if		sContinue <> 6 Then
+				WScript.Echo "Carmageddon will remain inactive. Exiting."
+				WScript.Quit() 
+			End If 
+			End if
+		Else if not objFSO.FileExists(cmpath) Then
+			wscript.echo "Couldn't find neither the original backup nor carmageddon's backup. Something went wrong during the implementation." & _
+			vbCrLf & "Try running Implementer.vbs in CarE's installation directory or contact Gipphe for support."
+			wscript.quit()
+		End if
 	End if
-	End If
+	End if
+	End if
 End sub
 
 Sub checkregistryaccess()
@@ -150,30 +178,3 @@ Sub checkregistryaccess()
 		NotReadRights = 1
 	End If   
 End sub
-
- Function RegKeyExists(nHive, strPath, strValueName)
-  Select Case Left(nHive, 20)
-   Case "HKCR", "HKEY_CLASSES_ROOT"
-    nHive = &H80000000
-   Case "HKCU", "HKEY_CURRENT_USER"
-    nHive = &H80000001
-   Case "HKLM", "HKEY_LOCAL_MACHINE"
-    nHive = &H80000002
-   Case "HKU", "HKEY_USERS"
-    nHive = &H80000003
-   Case "HKCC", "HKEY_CURRENT_CONFIG"
-    nHive = &H80000005
-   Case Else
-    WScript.Echo "Hive Not Supported."
-    WScript.Quit 
-  End Select
-  Dim objRegistry
-  Dim strComputer, strValue
-  
-  strComputer = "."
-  Set objRegistry = GetObject("winmgmts:\\" & strComputer & "\root\default:StdRegProv") 
-  
-   objRegistry.GetStringValue nHive, strPath, strValueName, strValue
-   RegKeyExists = Not IsNull(strValue)
-  RegKeyExists = CStr (RegKeyExists)
- End Function 
