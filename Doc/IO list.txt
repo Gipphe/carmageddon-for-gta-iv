@@ -1,0 +1,11 @@
+Button list:
+	button_close	QPushButton		Close
+	toggle_EFLC		QPushButton		EFLC:
+	toggle_GTAIV	QPushButton		GTAIV:
+	findGTAIV		QPushButton		Find GTAIV
+	findEFLC		QPushButton		Find EFLC
+	fixGTAIV		QPushButton		Reimplement GTAIV
+	fixEFLC			QPushButton		Reimplement EFLC
+	status_EFLC		QLabel			Status of EFLC
+	status_GTAIV	QLabel			Status of GTAIV
+	statusLine		QLabel			General Status

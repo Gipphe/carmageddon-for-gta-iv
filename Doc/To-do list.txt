@@ -1,0 +1,25 @@
+1. Check for GTA IV/EFLC path. Exit loop on found.
+	a. Saved config file
+	b. In the registry
+	# c. Check common paths
+	c. Prompt user for input
+2. Extract and back up current handling.dat
+	a. Use said handling.dat as vanilla file to preserve user mods' handling.dat file
+3. Get current state of Carmageddon on GTAIV/EFLC
+	a. IF CARAMGEDDON NOT FOUND:
+		Delete all instances of handling*.dat and cm\ and backup\
+		Implement Carmageddon folders cm\ and backup\, and restore original handling.dat file
+	b. Update labels correspondingly
+4. ON TOGGLE: Toggle state of Carmageddon on GTAIV/EFLC
+	a. Check state
+	b. IF ACTIVE: 
+		i. Store handling_carmageddon.dat
+		ii. Move handling_backup.dat to data\
+	c. IF INACTIVE:
+		i. Store handling_backup.dat
+		ii. Move handling_carmageddon.dat to data\
+	d. IF UNDETERMINABLE:
+		i. Notify user
+		ii. Goto 3a.
+	e. Update labels correspondingly
+5. ON FIND: Goto 1.

@@ -1,2 +1,7 @@
 *.rar
 *.exe
+__pycache__/
+/build
+/Output
+log.log
+/libs

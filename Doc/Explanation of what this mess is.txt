@@ -1,0 +1,15 @@
+Carmageddon.ui				Qt's UI file
+cm.py						PyQt's compiled UI file (compiled from Carmageddon.ui)
+CmIcon.ico					The new app icon! (aww yeah!)
+handLibs.py					The Carmageddonified handling.dat file as a Python variable, to be imported into the script.
+handling.dat				Vanilla handling.dat file
+handling_carmageddon.dat	Carmageddon's handling.dat file
+icons.qrc					Qt's icons file
+icons_rc.py					PyQt's compiled icons file, containing binary information on how to draw the icons as text.
+IO list.txt					List of all Qt inputs and outputs.
+main.py						The main script, doing all the work.
+msvcr100.dll				A dll the czfreeze-compiled version is dependent on.
+Pyuic4Pyrcc.bat				A script to compile both the UI and icons with one click.
+setup2.py					Cx_Freeze distutil script.
+test.py						Temporary test script.
+To-do list.txt				A list of progress.

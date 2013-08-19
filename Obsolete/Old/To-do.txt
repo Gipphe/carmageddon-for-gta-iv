@@ -1,0 +1,52 @@
+# INIT
+1. Check if GTAIV is installed/Get GTAIV path
+	a. Check if Carmageddon is implemented
+		i. If handling.dat exists, handling_cm.dat and handling_bck.dat doesn't exist
+			1. Implement Carmageddon files relative to handling.dat
+		ii. If handling.dat exists, handling_cm.dat or handling_bck.dat exist
+			1. Do nothing
+		iii. If handling_cm.dat and handling_bck.dat exist
+			1. Remove handling.dat, handling_cm.dat and handling_bck.dat
+			2. Implement handling.dat and handling_cm.dat
+		iv. If handling.dat doesn't exist
+			1. Remove handling.dat, handling_cm.dat and handling_bck.dat
+			2. Implement handling.dat and handling_cm.dat
+			
+2. Check if EFLC is installed/Get EFLC path
+	a. Check if Carmageddon is implemented
+		i. If all handling.dats exist, no handling_cm.dat and no handling_bck.dat doesn't exist
+			1. Implement Carmageddon files relative to all handling.dat
+		ii. If all handling.dats exist, all handling_cm.dat or all handling_bck.dat exist
+			1. Do nothing
+		iii. If one or more handling.dat exists, one or more handling_cm.dat and one or more handling_bck.dat exists
+			1. Remove all handling.dat, all handling_cm.dat and all handling_bck.dat
+			2. Implement all vanilla handling.dat and all handling_cm.dat
+		iv. If no handling.dat exists, one or more handling_cm.dat and/or one or more handling_bck.dat exists
+			1. Remove all handling_cm.dat and/or all handling_bck.dat
+			2. Implement all handling.dat and all handling_cm.dat
+		v. If all handling.dat exist, less than 3 handling_cm.dat exists and/or less than 3 handling_bck.dat exists
+			1. Remove all handling.dat, all handling_cm.dat and all handling_bck.dat
+			2. Implement all handling.dat and all handling_cm.dat
+		vi. If less than 3 handling.dat exist
+			1. Remove all handling.dat, all handling_cm.dat and all handling_bck.dat
+			2. Implement all handling.dat and all handling_cm.dat
+
+# ACTIVATE
+1. Get current state of GTAIV/EFLC
+	a. If current state = active
+		i. Do nothing
+	b. If current state = inactive
+		i. Move all handling.dat to each handling_bck.dat
+		ii. Move all handling_cm.dat to each handling.dat
+
+# DEACTIVATE
+1. Get current state of GTAIV/EFLC
+	a. If current state = active
+		i. Move all handling.dat to each handling_cm.dat
+		ii. Move all handling_bck.dat to each handling.dat
+	b. If current state = inactive
+		i. Do nothing
+		
+# UNINSTALL
+1. Remove all handling.dat, all handling_cm.dat and all handling_bck.dat
+2. Implement all handling.dat
